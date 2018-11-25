@@ -1,7 +1,7 @@
 
 
 #### Disruptor Quick Start
-[代码](https://note.youdao.com/)
+[代码](https://github.com/xxg3053/learn-disruptor/blob/master/disruptor/src/main/java/com/kenfo/disruptor/quickstart/Main.java)
 1. 建立一个工厂Event类， 用于创建Event类实例对象
 2. 需要有一个监听事件类，用于处理数据（Event类）
 3. 实例化Disruptor实例，配置一些列参数，编写Distruptor核心组件
@@ -80,7 +80,9 @@
 EventHandlerGroup<T> handleEventsWith(final EventHandler<? super T> ...handlers)
 ```
 - 串行操作： 使用链式调用的方式
+    - [代码](https://github.com/xxg3053/learn-disruptor/blob/master/disruptor/src/main/java/com/kenfo/disruptor/high/chain/Main.java)
 - 并行操作：使用单独调用的方式
+    - [代码](https://github.com/xxg3053/learn-disruptor/blob/master/disruptor/src/main/java/com/kenfo/disruptor/high/chain/Main.java)
 
 ##### 多边形高端操作
 ```
@@ -97,3 +99,4 @@ disruptor.after(h2, h5).handleEventsWith(h3);
 ```
 
 #### 多生产者，多消费者模型
+[代码](https://github.com/xxg3053/learn-disruptor/blob/master/disruptor/src/main/java/com/kenfo/disruptor/high/multil/Main.java)
