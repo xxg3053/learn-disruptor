@@ -100,3 +100,9 @@ disruptor.after(h2, h5).handleEventsWith(h3);
 
 #### 多生产者，多消费者模型
 [代码](https://github.com/xxg3053/learn-disruptor/blob/master/disruptor/src/main/java/com/kenfo/disruptor/high/multil/Main.java)
+
+
+#### Netty 与 disruptor
+
+
+###### jboss marshalling
