@@ -106,3 +106,18 @@ disruptor.after(h2, h5).handleEventsWith(h3);
 
 
 ###### jboss marshalling
+
+
+#### 分布式统一ID生成策略
+1. zookeeper
+2. redis
+
+业界主流的分布式ID生成器的策略是：   
+1. 提前加载，也就是预加载的机制（加载到内存）
+    - 并发的获取，采用Disruptor框架去提升性能
+    - 监控，按配置规则，用量在去生成
+2. 单点生成方式
+    - 固定的一个机器节点来生成一个唯一的ID，好处是能做到全局唯一
+    - 需要相应的业务规则：机器码 + 时间戳 + 自增序列 （NTP时间同步问题）
+    - NTP是网络时间协议（Network Time Protocol），它是用来同步网络中各个计算机的时间协议
+    
