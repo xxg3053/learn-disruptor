@@ -73,6 +73,35 @@
 - 确保每个sequence只被一个消费者，在同一个workPool中处理多个WorkProcessor不会消费同样的sequence
 
 
+#### 并发编程
+1. 编发编程核心-并发容器类
+2. 并发编程核心-Volatile、Atmoic、UnSafe
+3. 并发编程核心-J.U.C工具类：CountDownLatch，CyclicBarrier, Future, Exchanger, ForkJoin, Semaphore
+4. 并发编程核心-ReentrantLock、 Condition、ReadWriteLock, LockSupport
+5. 并发编程核心-AQS架构   
+
+##### 并发容器类
+- ConcurrentMap 
+    - 分段锁
+    - DEFAULT_CAPACITY 16
+    
+- CopyOnWrite
+    - 读多写少
+    - ReentrantLock 
+    - 写的时候全量拷贝，copy数组，在副本上操作
+- ArrayBlockingQueue(有界队列)， LinkedBlockingQueue(无界队列)
+- SynchronousQueue, PriorityBlockingQueue
+    
+
+```
+//释放资源使用 try finally方式
+try{
+
+}finally{
+    //释放
+}
+
+```
 
 #### 并行计算
 ##### 串、并行操作
@@ -126,3 +155,70 @@ disruptor.after(h2, h5).handleEventsWith(h3);
     - 需要相应的业务规则：机器码 + 时间戳 + 自增序列 （NTP时间同步问题）
     - NTP是网络时间协议（Network Time Protocol），它是用来同步网络中各个计算机的时间协议
     
+
+#### 并发编程核心
+ReentrantLock、Condition、ReadWriteLock、LockSupport   
+AQS架构   
+
+##### 并发容器类
+ConCurrentMap: 分段锁  
+CopyOnWrite: 读写分离，适合读多写少    
+ArrayBlockingQueue、LinkedBlockingQueue  
+SynchronousQueue、 PriorityBlockingQueue   
+DelayQueue   
+
+##### Volatile
+Volatile:
+1. 线程间的可见性  
+2. 阻止指令重排序  
+动态更改配置等可使用volatile实现（zk实现也可以）
+
+##### Atomic & UnSafe
+Atomic系列类提供了原子性操作，保障多线程下的安全（都是用UnSafe类实现）      
+UnSafe类的四大作用：  
+1. 内存操作  
+2. 字段的定位与修改   
+3. 挂起与恢复  
+4. CAS操作（乐观锁）
+
+#### J.U.C工具类
+CountDownLatch & CyclicBarrier
+Future模式与Caller接口  
+Exchanger线程数据交换器   
+ForkJoin并行计算框架   
+Semaphore信号量    
+
+#### AQS锁
+ReentrantLock重入锁   
+ReentrantReadWriteLock读写锁    
+Condition条件判断   
+Locksupport基于线程的锁（支持先唤醒，在阻塞）  
+
+#### 线程池  
+- Executors工厂类：不建议使用工厂类里面创建线程池的方法，不安全，都没有界限   
+- ThreadPoolExecutor自定义线程池     
+```
+ThreadPoolExecutor pool = new ThreadPoolExecutor(
+        5,
+        Runtime.getRuntime().availableProcessors() * 2,
+        60,
+        TimeUnit.SECONDS,
+        new ArrayBlockingQueue<>(200),//有界队列
+        r -> {
+            Thread t = new Thread(r);
+            //设置线程相关属性
+            t.setName("order-thread");
+            return t;
+        },
+        (r, executor) -> {
+            System.out.println("拒绝策略");
+            //日志、补偿等等
+        }
+);
+```
+- 计算机密集型与IO密集型  
+1. 如果是计算机密集型，则是cup+1 或者 cup*2
+2. 如果是IO密集型，则一般设置：cpu/(1 - 阻塞系数(范围：0.8到0.9))  
+
+- 如何正确使用线程池
+定义线程大小  
